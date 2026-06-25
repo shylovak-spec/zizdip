@@ -72,7 +72,7 @@
                 gap: 2rem;
             }
             .info-container {
-                align-items: flex-start;
+                align-items: center; /* Центруємо вміст лівої колонки на десктопі */
             }
             .content-section {
                 flex-direction: row;
@@ -112,8 +112,8 @@
         </div>
 
         <div id="detailView" class="hidden w-full">
-            <div class="w-full text-left mb-4">
-                <button onclick="showMainView()" class="text-black text-3xl font-bold transition-all duration-300 transform hover:scale-110 focus:outline-none">
+            <div class="w-full text-left mb-2">
+                <button onclick="showMainView()" class="text-black text-3xl font-bold transition-all duration-300 transform hover:scale-110 focus:outline-none px-2">
                     &larr;
                 </button>
             </div>
@@ -141,17 +141,17 @@
                     <h3 class="font-bold text-lg mb-2">Дії при аварії</h3>
                     <ul class="list-disc pl-5 text-gray-700">
                         <li><b>Потрапляння в очі:</b> Промити великою кількістю води протягом 15 хв</li>
-                        <li><b>Отруєння при вдиханні:</b> Вивести на свіже повітря, послабити тісний одяг (комір, краватка, ремінь або пояс)</li>
+                        <li><b>Отруєння при вдиханні:</b> Вивести на свіже повітря, послабити тісний одяг</li>
                         <li><b>Потрапляння на шкіру:</b> Промити великою кількістю води протягом 15 хв</li>
-                        <li><b>Проковтування:</b> Промити рот великою кількістю води. Випити невелику кількість води. Не провокувати блювоту.</li>
+                        <li><b>Проковтування:</b> Промити рот водою. Не провокувати блювоту.</li>
                     </ul>
                 `,
                 protection: `
                     <h3 class="font-bold text-lg mb-2">Засоби захисту</h3>
                     <ul class="list-disc pl-5 text-gray-700">
-                        <li>Захисні рукавички нітрилова</li>
+                        <li>Захисні рукавички нітрилові</li>
                         <li>Захисні окуляри з боковими щитками</li>
-                        <li>Хімічний респіратор з картриджем для органічних парів та повною маскою</li>
+                        <li>Хімічний респіратор з картриджем для органічних парів</li>
                         <li>Фартук/халат хімічностійкий</li>
                     </ul>
                 `,
@@ -176,7 +176,7 @@
                     <h3 class="font-bold text-lg mb-2">Дії при аварії</h3>
                     <ul class="list-disc pl-5 text-gray-700">
                         <li><b>Потрапляння в очі:</b> Промити великою кількістю води протягом 10 хв</li>
-                        <li><b>Отруєння при вдиханні:</b> Вивести на свіже повітря, послабити тісний одяг</li>
+                        <li><b>Отруєння при вдиханні:</b> Вивести на свіже повітря</li>
                     </ul>
                 `,
                 protection: `
@@ -236,7 +236,7 @@
                     </ul>
                 `,
                 protection: `
-                    <h3 class="font-bold text-lg mb-2">Засоіби захисту</h3>
+                    <h3 class="font-bold text-lg mb-2">Засоби захисту</h3>
                     <ul class="list-disc pl-5 text-gray-700">
                         <li>Захисні рукавички нітрилові</li>
                     </ul>
@@ -351,7 +351,7 @@
             const detailContent = document.getElementById('detailContent');
             detailContent.innerHTML = `
                 <div class="info-container w-full sm:w-1/2">
-                    <h2 class="text-xl sm:text-2xl font-semibold mb-4 text-center sm:text-left">${substanceName}</h2>
+                    <h2 class="text-xl sm:text-2xl font-semibold mb-4 text-center w-full">${substanceName}</h2>
                     <div class="image-and-buttons flex flex-col items-center w-full">
                         <img src="${data.image}" alt="Зображення ${substanceName}" class="rounded-lg mb-4 fixed-image">
                         <div class="buttons-container w-full sm:w-auto">
