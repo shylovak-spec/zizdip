@@ -61,8 +61,8 @@
         }
         .fixed-image {
             width: 200px;
-            height: 200px; /* Додано фіксовану висоту */
-            object-fit: contain; /* Змінено для збереження пропорцій і розміщення */
+            height: 200px;
+            object-fit: contain;
         }
         @media (min-width: 640px) {
             .container.detail-view {
@@ -99,25 +99,25 @@
 </head>
 <body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
 
-    <!-- Головний контейнер додатку -->
     <div id="appContainer" class="container">
         
-        <!-- Цей блок буде прихований або видимий в залежності від того, що відображається -->
-        <div id="mainView">
-            <h1 class="text-3xl font-bold mb-6">Список хімічних речовин для дільниці DIP</h1>
-            <div id="substanceList" class="space-y-4">
-                <!-- Список речовин буде згенеровано тут за допомогою JavaScript -->
+        <div id="mainView" class="w-full">
+            <h1 class="text-2xl font-bold mb-4 text-center sm:text-left">Список хімічних речовин для дільниці DIP</h1>
+            
+            <div class="mb-6">
+                <input type="text" id="searchInput" placeholder="Пошук речовини..." class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all">
             </div>
+
+            <div id="substanceList" class="space-y-4">
+                </div>
         </div>
 
-        <!-- Цей блок буде прихований або видимий в залежності від того, що відображається -->
-        <div id="detailView" class="hidden">
-            <button onclick="showMainView()" class="absolute top-4 left-4 text-black text-2xl font-bold transition-all duration-300 transform hover:scale-105">
-    &larr;
-</button>
-            <div id="detailContent" class="w-full flex flex-col sm:flex-row gap-8">
-                <!-- Детальна інформація буде згенерована тут -->
-            </div>
+        <div id="detailView" class="hidden relative w-full">
+            <button onclick="showMainView()" class="absolute top-0 left-0 text-black text-2xl font-bold transition-all duration-300 transform hover:scale-105 z-10">
+                &larr;
+            </button>
+            <div id="detailContent" class="w-full flex flex-col sm:flex-row gap-8 pt-10 sm:pt-0">
+                </div>
         </div>
     </div>
 
@@ -357,6 +357,34 @@
                 `
             },
         };
+// Функція для генерації списку речовин (з підтримкою пошуку)
+        function renderList(searchTerm = '') {
+            const substanceList = document.getElementById('substanceList');
+            substanceList.innerHTML = ''; // Очищуємо старий список
+
+            const normalizedSearch = searchTerm.toLowerCase().trim();
+            let hasResults = false;
+
+            for (const substance in substanceData) {
+                if (substance.toLowerCase().includes(normalizedSearch)) {
+                    hasResults = true;
+                    const listItem = document.createElement('a');
+                    listItem.href = '#';
+                    listItem.classList.add('list-item');
+                    listItem.textContent = substance;
+                    listItem.onclick = (e) => {
+                        e.preventDefault();
+                        showDetailView(substance);
+                    };
+                    substanceList.appendChild(listItem);
+                }
+            }
+
+            // Якщо нічого не знайдено
+            if (!hasResults) {
+                substanceList.innerHTML = `<p class="text-gray-500 text-center py-4">Речовин за вашим запитом не знайдено.</p>`;
+            }
+        }
 
         // Функція для відображення головної сторінки зі списком
         function showMainView() {
@@ -374,9 +402,8 @@
             detailContent.innerHTML = `
                 <div class="info-container w-full sm:w-1/2">
                     <h2 class="text-xl sm:text-2xl font-semibold mb-4 text-center sm:text-left">${substanceName}</h2>
-                    
-                    <div class="image-and-buttons flex flex-col items-center">
-                        <img src="${data.image}" alt="Зображення ${substanceName}" class="rounded-lg mb-4 sm:mb-0 fixed-image">
+                    <div class="image-and-buttons flex flex-col items-center w-full">
+                        <img src="${data.image}" alt="Зображення ${substanceName}" class="rounded-lg mb-4 fixed-image">
                         <div class="buttons-container w-full sm:w-auto">
                             <button onclick='showSubstanceInfo(${JSON.stringify(substanceName)}, "dangers")' class="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-4 rounded-xl shadow-md transition-all duration-300 transform hover:scale-105 mb-2">Небезпеки</button>
                             <button onclick='showSubstanceInfo(${JSON.stringify(substanceName)}, "actions")' class="w-full bg-cyan-500 hover:bg-cyan-600 text-white font-bold py-3 px-4 rounded-xl shadow-md transition-all duration-300 transform hover:scale-105 mb-2">Дії при аварії</button>
@@ -404,20 +431,14 @@
 
         // Функція для ініціалізації додатка
         function initializeApp() {
-            const substanceList = document.getElementById('substanceList');
+            // Початковий рендер списку
+            renderList();
             
-            // Динамічно генеруємо список речовин з об'єкта substanceData
-            for (const substance in substanceData) {
-                const listItem = document.createElement('a');
-                listItem.href = '#';
-                listItem.classList.add('list-item');
-                listItem.textContent = substance;
-                listItem.onclick = (e) => {
-                    e.preventDefault();
-                    showDetailView(substance);
-                };
-                substanceList.appendChild(listItem);
-            }
+            // Навішуємо подію пошуку на інпут
+            const searchInput = document.getElementById('searchInput');
+            searchInput.addEventListener('input', (e) => {
+                renderList(e.target.value);
+            });
         }
 
         // Запуск додатка при завантаженні сторінки
